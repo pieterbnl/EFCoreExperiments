@@ -29,7 +29,7 @@ public class ApplicationDbContext : DbContext
             .HasMaxLength(150)
             .IsRequired();
 
-        modelBuilder.Entity<Cinema>().Property(p => p.Price)
+        modelBuilder.Entity<CinemaHall>().Property(p => p.Cost)
             .HasPrecision(precision: 9, scale: 2);
 
         modelBuilder.Entity<Movie>().Property(p => p.Title)
@@ -57,5 +57,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Actor> Actors { get; set; }
     public DbSet<Cinema> Cinemas { get; set; }
     public DbSet<Movie> Movies { get; set; }    
-    public DbSet<CinemaOffer> CinemaOffers { get; set; }
+    public DbSet<CinemaOffer> CinemaOffers { get; set; }    
+    public DbSet<CinemaHall> CinemaHalls { get; set; }
 }
