@@ -23,9 +23,17 @@ public class ApplicationDbContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<Actor>().Property(p => p.DateOfBirth)
-            .HasColumnType("date");            
+            .HasColumnType("date");
+
+        modelBuilder.Entity<Cinema>().Property(p => p.Name)
+            .HasMaxLength(150)
+            .IsRequired();
+
+        modelBuilder.Entity<Cinema>().Property(p => p.Price)
+            .HasPrecision(precision: 9, scale: 2);
     }
 
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Actor> Actors { get; set; }
+    public DbSet<Cinema> Cinemas { get; set; }
 }
