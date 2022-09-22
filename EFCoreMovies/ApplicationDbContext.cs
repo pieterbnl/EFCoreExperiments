@@ -16,7 +16,11 @@ public class ApplicationDbContext : DbContext
         // modelBuilder.Entity<Genre>().HasKey(p => p.Id); // for demonstration purposes only, not needed when following EF conventions
         modelBuilder.Entity<Genre>()
             .Property(p => p.Name).HasMaxLength(150)
-            .IsRequired(); 
+            .HasColumnName("GenreName")
+            .IsRequired();
+
+        modelBuilder.Entity<Genre>()
+            .ToTable(name: "GenresTbl", schema: "movies");
     }
 
     public DbSet<Genre> Genres { get; set; }
