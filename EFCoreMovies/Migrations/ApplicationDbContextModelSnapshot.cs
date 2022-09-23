@@ -35,7 +35,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("CinemaHallMovie");
+                    b.ToTable("CinemaHallMovie", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.Actor", b =>
@@ -59,7 +59,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.Cinema", b =>
@@ -80,7 +80,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas");
+                    b.ToTable("Cinemas", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.CinemaHall", b =>
@@ -107,7 +107,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasIndex("CinemaId");
 
-                    b.ToTable("CinemaHalls");
+                    b.ToTable("CinemaHalls", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.CinemaOffer", b =>
@@ -136,7 +136,7 @@ namespace EFCoreMovies.Migrations
                     b.HasIndex("CinemaId")
                         .IsUnique();
 
-                    b.ToTable("CinemaOffers");
+                    b.ToTable("CinemaOffers", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.Genre", b =>
@@ -154,7 +154,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.Movie", b =>
@@ -183,7 +183,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.MovieActor", b =>
@@ -205,7 +205,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MoviesActors");
+                    b.ToTable("MoviesActors", (string)null);
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -220,7 +220,7 @@ namespace EFCoreMovies.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("GenreMovie");
+                    b.ToTable("GenreMovie", (string)null);
                 });
 
             modelBuilder.Entity("CinemaHallMovie", b =>
