@@ -32,6 +32,9 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<CinemaHall>().Property(p => p.Cost)
             .HasPrecision(precision: 9, scale: 2);
 
+        modelBuilder.Entity<CinemaHall>().Property(p => p.CinemaHallType)
+            .HasDefaultValue(CinemaHallType.TwoDimensions);
+
         modelBuilder.Entity<Movie>().Property(p => p.Title)
             .HasMaxLength(250)
             .IsRequired();
