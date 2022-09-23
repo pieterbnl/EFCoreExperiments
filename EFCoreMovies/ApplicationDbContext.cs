@@ -1,5 +1,6 @@
 ﻿using EFCoreMovies.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace EFCoreMovies;
 
@@ -22,26 +23,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        // modelBuilder.Entity<Genre>().HasKey(p => p.Id); // for demonstration purposes only, not needed when following EF conventions
-        modelBuilder.Entity<Genre>().Property(p => p.Name).IsRequired();
-
-        modelBuilder.Entity<Actor>().Property(p => p.Name).IsRequired();
-        modelBuilder.Entity<Actor>().Property(p => p.Biography).HasColumnType("nvarchar(max)");
-
-        modelBuilder.Entity<Cinema>().Property(p => p.Name).IsRequired();
-
-        modelBuilder.Entity<CinemaHall>().Property(p => p.Cost).HasPrecision(precision: 9, scale: 2);
-        modelBuilder.Entity<CinemaHall>().Property(p => p.CinemaHallType).HasDefaultValue(CinemaHallType.TwoDimensions);
-
-        modelBuilder.Entity<Movie>().Property(p => p.Title).HasMaxLength(250).IsRequired();
-        modelBuilder.Entity<Movie>().Property(p => p.PosterURL).HasMaxLength(500).IsUnicode(false); // disallows use of unicode (for 'strange' characters) == saving space
-
-        modelBuilder.Entity<CinemaOffer>().Property(p => p.DiscountPercentage).HasPrecision(precision: 5, scale: 2);         
-
-        // Indicate composed key for MovieActor, consisting of MovieId and ActorId
-        // Note: order of Id's doesn't matter
-        modelBuilder.Entity<MovieActor>().HasKey(p => new { p.MovieId, p.ActorId });
+        // modelBuilder.ApplyConfiguration(new GenreConfig()); // example to apply configuration one by one
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // applies all config files in Configuration folder at once
     }
 
     // DbSet's to allow for querying on the tables
