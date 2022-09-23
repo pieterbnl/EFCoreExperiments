@@ -54,12 +54,21 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<CinemaOffer>().Property(p => p.End)
             .HasColumnType("date");
+
+        // Indicate composed key for MovieActor, consisting of MovieId and ActorId
+        // Note: order of Id's doesn't matter
+        modelBuilder.Entity<MovieActor>().HasKey(p => new { p.MovieId, p.ActorId }); 
+        
+        modelBuilder.Entity<MovieActor>().Property(p => p.Character)
+            .HasMaxLength(150);            
     }
 
+    // DbSet's to allow for querying on the tables
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Actor> Actors { get; set; }
     public DbSet<Cinema> Cinemas { get; set; }
     public DbSet<Movie> Movies { get; set; }    
     public DbSet<CinemaOffer> CinemaOffers { get; set; }    
-    public DbSet<CinemaHall> CinemaHalls { get; set; }
+    public DbSet<CinemaHall> CinemaHalls { get; set; }    
+    public DbSet<MovieActor> MoviesActors { get; set; }
 }

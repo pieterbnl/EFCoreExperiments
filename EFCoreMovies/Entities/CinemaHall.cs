@@ -8,5 +8,6 @@ public class CinemaHall
     public int CinemaId { get; set; } // FK 
 
     // Navigation property
-    public Cinema Cinema { get; set; } 
+    public Cinema Cinema { get; set; }
+    public HashSet<Movie> Movies { get; set; }
 }
