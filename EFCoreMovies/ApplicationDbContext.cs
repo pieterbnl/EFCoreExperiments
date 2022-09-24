@@ -1,4 +1,5 @@
 ﻿using EFCoreMovies.Entities;
+using EFCoreMovies.Entities.Seeding;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -25,6 +26,7 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         // modelBuilder.ApplyConfiguration(new GenreConfig()); // example to apply configuration one by one
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // applies all config files in Configuration folder at once
+        Seeding.Seed(modelBuilder);
     }
 
     // DbSet's to allow for querying on the tables
