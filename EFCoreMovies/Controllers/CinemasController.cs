@@ -5,6 +5,8 @@ using EFCoreMovies.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace EFCoreMovies.Controllers;
 
@@ -27,5 +29,30 @@ public class CinemasController : ControllerBase
         return await _context.Cinemas
             .ProjectTo<CinemaDTO>(_mapper.ConfigurationProvider)
             .ToListAsync();
+    }
+
+
+    // Accepts input of latitude and longitude of personal current location
+    // Compares distance of each cinema to personal location
+    // Returns the closest cinema's (within 2km distance max)
+    [HttpGet("closetome")]
+    public async Task<ActionResult> Get(double latitude, double longitude)
+    {
+        var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+
+        var myLocation = geometryFactory.CreatePoint(new Coordinate(longitude, latitude));
+
+        var maxDistanceInMeters = 2000; // 2km's
+
+        var cinemas = await _context.Cinemas
+            .OrderBy(c => c.Location.Distance(myLocation))
+            .Where(c => c.Location.IsWithinDistance(myLocation, maxDistanceInMeters))
+            .Select(c => new
+            {
+                Name = c.Name,
+                Distance = Math.Round(c.Location.Distance(myLocation))
+            }).ToListAsync();
+        
+        return Ok(cinemas);
     }
 }
