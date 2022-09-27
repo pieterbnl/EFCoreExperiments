@@ -8,6 +8,6 @@ public class CinemaHall
     public int CinemaId { get; set; } // FK 
 
     // Navigation property
-    public virtual Cinema Cinema { get; set; }
-    public virtual HashSet<Movie> Movies { get; set; }
+    public Cinema Cinema { get; set; }
+    public HashSet<Movie> Movies { get; set; }
 }

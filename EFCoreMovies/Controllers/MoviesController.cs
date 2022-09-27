@@ -21,7 +21,8 @@ public class MoviesController : ControllerBase
         _mapper = mapper;
     }
 
-    // Ordering and filtering with DTO example
+    // Eager loading example (loading data from related record via navigation properties)
+    // + Ordering and filtering with DTO 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<MovieDTO>> Get(int id)
     {

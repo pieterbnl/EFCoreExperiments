@@ -13,6 +13,6 @@ public class Cinema
     public Point Location { get; set; } 
 
     // navigation properties
-    public virtual CinemaOffer CinemaOffer { get; set; } // because only one offer per cinema, this is a 1:1 relationship
-    public virtual HashSet<CinemaHall> CinemaHalls { get; set; } // note that HashSet has a better performance than ICollection, but does not guarantee an ordered result
+    public CinemaOffer CinemaOffer { get; set; } // because only one offer per cinema, this is a 1:1 relationship
+    public HashSet<CinemaHall> CinemaHalls { get; set; } // note that HashSet has a better performance than ICollection, but does not guarantee an ordered result
 }
