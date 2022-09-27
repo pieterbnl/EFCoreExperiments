@@ -24,8 +24,11 @@ public class MoviesController : ControllerBase
     public async Task<ActionResult<MovieDTO>> Get(int id)
     {
         var movie = await _context.Movies
-            .Include(m => m.Genres) // using navigation property to load related Genres data
-            .Include(m => m.CinemaHalls)
+            .Include(m => m.Genres // using navigation property to load related Genres data
+                .OrderByDescending(g => g.Name) // set order
+                .Where(g => !g.Name.Contains("m")))  // filter on a criteria
+            .Include(m => m.CinemaHalls
+                .OrderByDescending(ch => ch.Cinema.Name))
                 .ThenInclude(ch => ch.Cinema)
             .Include(m => m.MoviesActors)
                 .ThenInclude(ma => ma.Actor)
@@ -38,7 +41,7 @@ public class MoviesController : ControllerBase
 
         var movieDTO = _mapper.Map<MovieDTO>(movie); // projection
 
-        movieDTO.Cinemas = movieDTO.Cinemas.DistinctBy(x => x.Id).ToList();
+        movieDTO.Cinemas = movieDTO.Cinemas.DistinctBy(x => x.Id).ToList(); // filters out duplicate cinemas
         
         return movieDTO;
     }
