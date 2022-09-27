@@ -9,5 +9,5 @@ public class Genre
 
     // [StringLength(maximumLength: 150)] // example of limiting property max length    
     public string Name { get; set; }
-    public HashSet<Movie> Movies { get; set; }
+    public virtual HashSet<Movie> Movies { get; set; }
 }

@@ -14,6 +14,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); // set default behavior globally for all queries
+    options.UseLazyLoadingProxies();
     options.UseSqlServer("name=DefaultConnection", sqlServer => sqlServer.UseNetTopologySuite());
 });
 
@@ -28,6 +29,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

@@ -21,6 +21,7 @@ public class MoviesController : ControllerBase
         _mapper = mapper;
     }
 
+    // Ordering and filtering with DTO example
     [HttpGet("{id:int}")]
     public async Task<ActionResult<MovieDTO>> Get(int id)
     {
@@ -47,7 +48,7 @@ public class MoviesController : ControllerBase
         return movieDTO;
     }
 
-
+    // Ordering and filtering via automapper example
     [HttpGet("automapper/{id:int}")]
     public async Task<ActionResult<MovieDTO>> GetWithAutoMapper(int id)
     {
@@ -55,17 +56,14 @@ public class MoviesController : ControllerBase
             .ProjectTo<MovieDTO>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (movieDTO == null)
-        {
-            return NotFound();
-        }
+        if (movieDTO == null) return NotFound();
 
         movieDTO.Cinemas = movieDTO.Cinemas.DistinctBy(x => x.Id).ToList(); // filters out duplicate cinemas
 
         return movieDTO;
     }
 
-
+    // Select loading example
     [HttpGet("selectLoading/{id:int}")]
     public async Task<ActionResult> GetSelectLoading(int id)
     {
@@ -80,14 +78,12 @@ public class MoviesController : ControllerBase
             })
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (movieDTO == null)
-        {
-            return NotFound();
-        }
+        if (movieDTO == null) return NotFound();
 
         return Ok(movieDTO);
     }
 
+    // Explicit loading example
     [HttpGet("explicitLoading/{id:int}")]
     public async Task<ActionResult<MovieDTO>> GetExplicit(int id)
     {
@@ -99,17 +95,8 @@ public class MoviesController : ControllerBase
             .Collection(p => p.Genres)
             .LoadAsync();
 
-        if (movie == null)
-        {
-            return NotFound();
-        }
+        if (movie == null) return NotFound();
 
-        /*await _context.Entry(movie).Collection(prop => prop.Genres).LoadAsync();
-
-        var movieDTO = _mapper.Map<MovieDTO>(movie);
-
-        return movieDTO;*/
-        
         var genresCount = await _context
             .Entry(movie)
             .Collection(prop => prop.Genres)
@@ -123,7 +110,21 @@ public class MoviesController : ControllerBase
             Id = movieDTO.Id,
             Title = movieDTO.Title,
             GenresCount = genresCount
-        });        
+        });
     }
-    
+
+    // Lazy loading example
+    [HttpGet("lazyLoading/{id:int}")]
+    public async Task<ActionResult<MovieDTO>> GetLazyLoading(int id)
+    {
+        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+        if (movie == null) return NotFound();
+
+        var movieDTO = _mapper.Map<MovieDTO>(movie); // projection
+
+        movieDTO.Cinemas = movieDTO.Cinemas.DistinctBy(x => x.Id).ToList(); // filters out duplicate cinemas
+
+        return movieDTO;
+    }
 }

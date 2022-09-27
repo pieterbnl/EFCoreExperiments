@@ -8,5 +8,5 @@ public class Actor
     public string Name { get; set; }
     public string Biography { get; set; }    
     public DateTime? DateOfBirth { get; set; }    
-    public HashSet<MovieActor> MovieActors { get; set; }
+    public virtual HashSet<MovieActor> MovieActors { get; set; }
 }
