@@ -64,4 +64,28 @@ public class MoviesController : ControllerBase
 
         return movieDTO;
     }
+
+
+    [HttpGet("selectloading/{id:int}")]
+    public async Task<ActionResult> GetSelectLoading(int id)
+    {
+        var movieDTO = await _context.Movies
+            .Select(m => new // just new, anonymous type
+                { // load Id, Title and Genres
+                    Id = m.Id,
+                    Title = m.Title,
+                    Genres = m.Genres
+                        .Select(g => g.Name) // free to do a select over the related data
+                        .OrderByDescending(n => n).ToList()
+                })
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (movieDTO == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(movieDTO);
+    }
+    
 }
