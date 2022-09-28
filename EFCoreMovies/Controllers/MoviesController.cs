@@ -128,4 +128,21 @@ public class MoviesController : ControllerBase
 
         return movieDTO;
     }
+
+    // Grouping by using the GroupBy function
+    // Grouping by InCinemas property in 2 categories:
+    // 1) where InCinemas is true, and where InCinemas is false
+    [HttpGet("groupedByCinema")]
+    public async Task<ActionResult> GetGroupByCinema()
+    {
+        var groupedMovies = await _context.Movies.GroupBy(m => m.InCinemas)
+            .Select(g => new
+            {
+                InCinemas = g.Key, // Key is equal to whatever value in m.InCinemas
+                Count = g.Count(), // Count operation over group
+                Movies = g.ToList() // List of movies in the group
+            }).ToListAsync();
+
+        return Ok(groupedMovies);
+    }
 }
