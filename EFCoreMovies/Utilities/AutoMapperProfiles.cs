@@ -14,6 +14,7 @@ public class AutoMapperProfiles : Profile
             .ForMember(dto => dto.Longitude, ent => ent.MapFrom(p => p.Location.X));
 
         CreateMap<Genre, GenreDTO>();
+        CreateMap<GenreCreationDTO, Genre>();
 
         CreateMap<Movie, MovieDTO>()
             .ForMember(dto => dto.Genres, 
