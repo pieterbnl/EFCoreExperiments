@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EFCoreMovies.DTOs;
-using EFCoreMovies.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -159,5 +157,39 @@ public class MoviesController : ControllerBase
        }).ToListAsync();
 
         return Ok(groupedMovies);
+    }
+
+    // Filter movies by title, genre, and if they are in cinema
+    // Dynamic in the sense that, it's only applied if the user wants to
+    [HttpGet("filter")]
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> Filter([FromQuery] MovieFilterDTO movieFilterDTO)
+    { // FromQuery because MovieFilterDTO is complext type, and using HttpGet.FromQuery means values from MovieFilterDTO comes from query strings.
+        var moviesQueryable = _context.Movies.AsQueryable();
+
+        if (!string.IsNullOrEmpty(movieFilterDTO.Title))
+        { // If Title is not null, put in Queryable a Where clause/filter
+            moviesQueryable = moviesQueryable.Where(m => m.Title.Contains(movieFilterDTO.Title));
+        }
+
+        if (movieFilterDTO.InCinemas)
+        {
+            moviesQueryable = moviesQueryable.Where(m => m.InCinemas);
+        }
+
+        if (movieFilterDTO.UpcomingReleases)
+        {
+            var today = DateTime.Today;
+            moviesQueryable = moviesQueryable.Where(m => m.ReleaseDate > today);
+        }
+
+        if (movieFilterDTO.GenreId != 0)
+        {
+            moviesQueryable = moviesQueryable
+           .Where(m => m.Genres.Select(g => g.Id).Contains(movieFilterDTO.GenreId));
+        }
+
+        var movies = await moviesQueryable.Include(m => m.Genres).ToListAsync();
+        
+        return _mapper.Map<List<MovieDTO>>(movies);
     }
 }
