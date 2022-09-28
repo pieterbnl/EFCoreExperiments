@@ -145,4 +145,19 @@ public class MoviesController : ControllerBase
 
         return Ok(groupedMovies);
     }
+
+    [HttpGet("groupByGenresCount")]
+    public async Task<ActionResult> GetGroupedByGenresCount()
+    {
+        var groupedMovies = await _context.Movies.GroupBy(m => m.Genres.Count()).Select(g => new 
+        {
+            Count = g.Key,
+            Titles = g.Select(m => m.Title),
+            Genres = g.Select(m => m.Genres)
+                .SelectMany(a => a) // Using SelectMany to flatten a collection of a collection.. into a single collection; a of array
+                    .Select(ge => ge.Name).Distinct() // Collection of genres
+       }).ToListAsync();
+
+        return Ok(groupedMovies);
+    }
 }
