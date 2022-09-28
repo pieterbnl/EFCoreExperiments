@@ -23,19 +23,11 @@ public class ActorsController
 
     // Get solution with use of DTO & Automapper
     [HttpGet]
-    public async Task<IEnumerable<ActorDTO>> Get(int page = 1, int recordsToSelect = 2)
+    public async Task<IEnumerable<ActorDTO>> Get()
     {
         return await _context.Actors.AsNoTracking()
             .OrderBy(a => a.Name)
-            .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)            
-            .Paginate(page, recordsToSelect)
+            .ProjectTo<ActorDTO>(_mapper.ConfigurationProvider)                        
             .ToListAsync();
-    }
-
-    // Select a single column (results in SELECT [a].[Id]
-    [HttpGet("ids")]
-    public async Task<IEnumerable<int>> GetIds()
-    {
-        return await _context.Actors.Select(a => a.Id).ToListAsync();
     }
 }
