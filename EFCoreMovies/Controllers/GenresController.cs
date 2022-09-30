@@ -25,8 +25,7 @@ public class GenresController : ControllerBase
     [HttpGet] 
     public async Task<IEnumerable<Genre>> Get()
     {
-        return await _context.Genres.AsNoTracking()
-            .Where(g => !g.IsDeleted) // Note: hard filter that has to be added to every query; instead it's better use query filters
+        return await _context.Genres.AsNoTracking()            
             .OrderBy(g => g.Name)
             .ToListAsync();
     }
@@ -107,6 +106,21 @@ public class GenresController : ControllerBase
         if (genre == null) return NotFound();
 
         genre.IsDeleted = true;
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+    
+    // Example of an endpoint to restore a soft deleted record
+    [HttpPost("restore/{id:int}")]
+    public async Task<ActionResult> Restore(int id)
+    {
+        // IgNoreQueryFilters is used to ignore the filter (in GenreConfig) that excludes soft deleted records 
+        // Otherwise soft deleted records would not be loaded and thus could not be restored
+        var genre = await _context.Genres.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        
+        if (genre == null) return NotFound();
+        
+        genre.IsDeleted = false; // reversing the soft deletion of a record
         await _context.SaveChangesAsync();
         return Ok();
     }
