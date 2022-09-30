@@ -94,4 +94,13 @@ public class CinemasController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok();
     }
+
+    [HttpPost("withDTO")]
+    public async Task<ActionResult> CreateCinema(CinemaCreationDTO cinemaCreationDTO)
+    {
+        var cinema = _mapper.Map<Cinema>(cinemaCreationDTO);
+        _context.Add(cinema);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
 }
