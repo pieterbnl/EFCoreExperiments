@@ -80,5 +80,20 @@ public class GenresController : ControllerBase
         await _context.SaveChangesAsync(); // EF will iterate through all entities its tracking, and apply the corresponding operations according to the status of each entity
         
         return Ok();
-    }  
+    }
+
+    // Example of a 'normal' delete, removing a record from the table
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        var genre = await _context.Genres.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (genre == null) return NotFound();
+
+        _context.Remove(genre); // changes status of genre entity to 'deleted'
+        await _context.SaveChangesAsync(); // will delete entity that's marked deleted
+
+        return Ok();
+    }   
+
 }
