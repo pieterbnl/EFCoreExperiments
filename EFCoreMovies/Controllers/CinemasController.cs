@@ -103,4 +103,50 @@ public class CinemasController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok();
     }
+
+    // Example of only updating related data (of cinema) directly,
+    // by using the corresponding db set
+    [HttpPut("cinemaOffer")]
+    public async Task<ActionResult> PutCinemaOffer(CinemaOffer cinemaOffer)
+    {
+        _context.Update(cinemaOffer);
+        await _context.SaveChangesAsync();
+        return Ok();        
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult> Get(int id)
+    {
+        var cinemaDB = await _context.Cinemas
+           .Include(c => c.CinemaHalls)
+           .Include(c => c.CinemaOffer)
+           .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (cinemaDB == null) return NotFound();
+
+        cinemaDB.Location = null;
+        
+        return Ok(cinemaDB);
+    }
+    
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Put(CinemaCreationDTO cinemaCreationDTO, int id)
+    {
+        // Load cinema from database
+        // Include ensures that the related entities are updated
+        // I.e.: this will update the cinema, cinemahalls and cinemaoffer
+        var cinemaDB = await _context.Cinemas
+            .Include(c => c.CinemaHalls)
+            .Include(c => c.CinemaOffer)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (cinemaDB == null) return NotFound();
+
+        // This method will be able to handle all usecases:
+        // not only for updating the principal entity, but also
+        // for updating (or deleting) the related entities
+        cinemaDB = _mapper.Map(cinemaCreationDTO, cinemaDB);
+        await _context.SaveChangesAsync();
+        return Ok();       
+    }
 }
