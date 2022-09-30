@@ -9,5 +9,7 @@ public class ActorConfig : IEntityTypeConfiguration<Actor>
     {
         builder.Property(p => p.Name).IsRequired();
         builder.Property(p => p.Biography).HasColumnType("nvarchar(max)");
+
+        // builder.Property(p => p.Name).HasField("_name"); // not needed, because we're following naming convention already
     }
 }
