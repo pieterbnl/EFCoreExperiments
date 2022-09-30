@@ -26,7 +26,8 @@ public class GenresController : ControllerBase
     public async Task<IEnumerable<Genre>> Get()
     {
         return await _context.Genres.AsNoTracking()
-            .OrderBy(g => g.Name)            
+            .Where(g => !g.IsDeleted) // Note: hard filter that has to be added to every query; instead it's better use query filters
+            .OrderBy(g => g.Name)
             .ToListAsync();
     }
 
@@ -94,6 +95,19 @@ public class GenresController : ControllerBase
         await _context.SaveChangesAsync(); // will delete entity that's marked deleted
 
         return Ok();
-    }   
+    }
 
+    // Example of a 'soft' delete, where the record is not actually deleted from the table.
+    // Instead it's just marked as deleted (by a property) and no longer shown to the client.    
+    [HttpDelete("softdelete/{id:int}")]
+    public async Task<ActionResult> SoftDelete(int id)
+    {
+        var genre = await _context.Genres.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (genre == null) return NotFound();
+
+        genre.IsDeleted = true;
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
 }
