@@ -7,7 +7,7 @@ public class Movie
     public bool InCinemas { get; set; }
     public DateTime ReleaseDate { get; set; }
     public string PosterURL { get; set; }
-    public HashSet<Genre> Genres { get; set; }
-    public HashSet<CinemaHall> CinemaHalls { get; set; }
-    public HashSet<MovieActor> MoviesActors { get; set; }
+    public List<Genre> Genres { get; set; }
+    public List<CinemaHall> CinemaHalls { get; set; }
+    public List<MovieActor> MovieActors { get; set; }
 }

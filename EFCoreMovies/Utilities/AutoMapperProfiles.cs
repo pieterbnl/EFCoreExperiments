@@ -27,7 +27,7 @@ public class AutoMapperProfiles : Profile
                 .OrderByDescending(ch => ch.Cinema.Name)
                 .Select(c => c.Cinema)))            
             .ForMember(dto => dto.Actors, 
-                ent => ent.MapFrom(p => p.MoviesActors.Select(ma => ma.Actor)));
+                ent => ent.MapFrom(p => p.MovieActors.Select(ma => ma.Actor)));
 
         var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
@@ -38,5 +38,17 @@ public class AutoMapperProfiles : Profile
 
         CreateMap<CinemaOfferCreationDTO, CinemaOffer>();
         CreateMap<CinemaHallCreationDTO, CinemaHall>();
+
+        CreateMap<MovieCreationDTO, Movie>()
+            .ForMember(ent => ent.Genres, dto =>
+                dto.MapFrom(prop =>
+                    prop.GenresIds
+                    .Select(id => new Genre() { Id = id })))
+            .ForMember(ent => ent.CinemaHalls, dto =>
+                dto.MapFrom(prop =>
+                    prop.CinemaHallsIds
+                    .Select(id => new CinemaHall() { Id = id })));
+
+        CreateMap<MovieActorCreationDTO, MovieActor>();
     }    
 }
