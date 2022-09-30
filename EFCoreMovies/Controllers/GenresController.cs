@@ -30,6 +30,24 @@ public class GenresController : ControllerBase
             .ToListAsync();
     }
 
+    // simple but unrealistic example of modifying data using EF connected model
+    [HttpPost("add2")]
+    public async Task<ActionResult> Add2(int id)
+    {
+        // load entity
+        var genre = await _context.Genres.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (genre == null)
+        {
+            return NotFound();
+        }
+
+        // make modification and save
+        genre.Name += "2";
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
     [HttpPost]
     public async Task<ActionResult> Post(GenreCreationDTO genreCreationDTO)
     {
@@ -62,5 +80,5 @@ public class GenresController : ControllerBase
         await _context.SaveChangesAsync(); // EF will iterate through all entities its tracking, and apply the corresponding operations according to the status of each entity
         
         return Ok();
-    }    
+    }  
 }
