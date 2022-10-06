@@ -54,18 +54,18 @@ public class GenresController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post(GenreCreationDTO genreCreationDTO)
     {
-        var genre = _mapper.Map<Genre>(genreCreationDTO);
-        // var status1 = _context.Entry(genre).State;
-        
+        var genreExists = await _context.Genres.AnyAsync(p => p.Name == genreCreationDTO.Name);
+
+        if (genreExists)
+        {
+            return BadRequest($"Genre with name {genreCreationDTO.Name} already exists");
+        }
+
+        var genre = _mapper.Map<Genre>(genreCreationDTO);                
         _context.Add(genre); // marking genre as (status) added
-        // _context.Genres.Add(genre); // same - but specifying explicitly about Genres; not required
-        
-        // var status2 = _context.Entry(genre).State;
-                
+                               
         await _context.SaveChangesAsync(); // telling EF to save all changes that are being tracked
         
-        // var status3 = _context.Entry(genre).State;
-
         return Ok();
     }
 
