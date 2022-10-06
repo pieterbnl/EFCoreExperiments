@@ -19,6 +19,8 @@ public class Actor
     }
     
     public string Biography { get; set; }    
-    public DateTime? DateOfBirth { get; set; }    
+    public DateTime? DateOfBirth { get; set; }
+
+    // Navigation properties
     public HashSet<MovieActor> MovieActors { get; set; }
 }

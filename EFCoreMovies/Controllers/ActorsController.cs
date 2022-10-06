@@ -47,7 +47,7 @@ public class ActorsController : ControllerBase
         var actorDB = await _context.Actors
             .FirstOrDefaultAsync(p => p.Id == id);
         
-        if (actorDB == null) return NotFound();        
+        if (actorDB == null) return NotFound();
 
         // Mapping the values from actorCreationDTO to actorDB
         // While at the same time maintaining the same instance of the actorDB object

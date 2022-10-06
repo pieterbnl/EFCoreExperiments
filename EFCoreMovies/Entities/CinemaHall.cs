@@ -7,7 +7,7 @@ public class CinemaHall
     public decimal Cost { get; set; }
     public int CinemaId { get; set; } // FK 
 
-    // Navigation property
+    // Navigation properties
     public Cinema Cinema { get; set; }
     public HashSet<Movie> Movies { get; set; }
 }

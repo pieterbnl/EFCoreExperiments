@@ -10,5 +10,7 @@ public class Genre
     // [StringLength(maximumLength: 150)] // example of limiting property max length    
     public string Name { get; set; }
     public bool IsDeleted { get; set; }
+
+    // Navigation properties
     public HashSet<Movie> Movies { get; set; }
 }

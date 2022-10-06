@@ -19,14 +19,14 @@ public class AutoMapperProfiles : Profile
         CreateMap<GenreCreationDTO, Genre>();
 
         CreateMap<Movie, MovieDTO>()
-            .ForMember(dto => dto.Genres, 
+            .ForMember(dto => dto.Genres,
                 ent => ent.MapFrom(p => p.Genres
-                .OrderByDescending(g => g.Name)))            
-            .ForMember(dto => dto.Cinemas, ent => 
+                .OrderByDescending(g => g.Name)))
+            .ForMember(dto => dto.Cinemas, ent =>
                 ent.MapFrom(p => p.CinemaHalls
                 .OrderByDescending(ch => ch.Cinema.Name)
-                .Select(c => c.Cinema)))            
-            .ForMember(dto => dto.Actors, 
+                .Select(c => c.Cinema)))
+            .ForMember(dto => dto.Actors,
                 ent => ent.MapFrom(p => p.MovieActors.Select(ma => ma.Actor)));
 
         var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);

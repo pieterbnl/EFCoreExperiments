@@ -20,7 +20,7 @@ public class MoviesController : ControllerBase
         _mapper = mapper;
     }
 
-    // Ordering and filtering via automapper example
+   /* // Ordering and filtering via automapper example
     [HttpGet("automapper/{id:int}")]
     public async Task<ActionResult<MovieDTO>> GetWithAutoMapper(int id)
     {
@@ -33,6 +33,18 @@ public class MoviesController : ControllerBase
         movieDTO.Cinemas = movieDTO.Cinemas.DistinctBy(x => x.Id).ToList(); // filters out duplicate cinemas
 
         return movieDTO;
+    }*/
+
+    [HttpGet("getmovie/{id:int}")]
+    public async Task<ActionResult<Movie>> Get(int id)
+    {
+        var movie = await _context.Movies
+            .Include(m => m.Genres) // using navigation property to load related Genres data
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (movie == null) return NotFound();
+        
+        return movie;
     }
 
     [HttpPost]

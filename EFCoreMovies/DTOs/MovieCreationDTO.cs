@@ -7,6 +7,6 @@ public class MovieCreationDTO
     public DateTime ReleaseDate { get; set; }
     public string PosterURL { get; set; }
     public List<int> GenresIds { get; set; }
-    public List<int> CinemaHallsIds { get; set; }
+    public List<int> CinemaHallsIds { get; set; }   
     public List<MovieActorCreationDTO> MovieActors { get; set; }
 }

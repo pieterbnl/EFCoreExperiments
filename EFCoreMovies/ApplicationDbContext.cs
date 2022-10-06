@@ -27,6 +27,8 @@ public class ApplicationDbContext : DbContext
         // modelBuilder.ApplyConfiguration(new GenreConfig()); // example to apply configuration one by one
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // applies all config files in Configuration folder at once
         Seeding.Seed(modelBuilder);
+
+        // modelBuilder.Entity<Log>().Property(p => p.Id).ValueGeneratedNever(); // for example only
     }
 
     // DbSet's to allow for querying on the tables
@@ -37,4 +39,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<CinemaOffer> CinemaOffers { get; set; }    
     public DbSet<CinemaHall> CinemaHalls { get; set; }    
     public DbSet<MovieActor> MoviesActors { get; set; }
+
+    public DbSet<Log> Logs { get; set; }
 }
