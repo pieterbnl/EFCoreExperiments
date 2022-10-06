@@ -20,7 +20,32 @@ public class Actor
     
     public string Biography { get; set; }    
     public DateTime? DateOfBirth { get; set; }
+    
+    [NotMapped]
+    public int? Age { get
+        {
+            if (!DateOfBirth.HasValue)
+            {
+                return null;
+            }
+            else
+            {
+                // calculating age, based on date of birth                
+                var dateOfBirth = DateOfBirth.Value;
+                var age = DateTime.Today.Year - dateOfBirth.Year;
+
+                // checking if birthday has already occured or not
+                if (new DateTime(DateTime.Today.Year, dateOfBirth.Month, dateOfBirth.Day) > DateTime.Today)
+                {
+                    age--;
+                }
+
+                return age;
+            }                       
+        }
+    }
 
     // Navigation properties
     public HashSet<MovieActor> MovieActors { get; set; }
+    public Address Addresses { get; set; }
 }

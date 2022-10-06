@@ -15,4 +15,6 @@ public class Cinema
     // navigation properties
     public CinemaOffer CinemaOffer { get; set; } // because only one offer per cinema, this is a 1:1 relationship
     public HashSet<CinemaHall> CinemaHalls { get; set; } // note that HashSet has a better performance than ICollection, but does not guarantee an ordered result
+
+    public Address Addresses { get; set; }
 }

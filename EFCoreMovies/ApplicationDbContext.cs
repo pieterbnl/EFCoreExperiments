@@ -29,6 +29,7 @@ public class ApplicationDbContext : DbContext
         Seeding.Seed(modelBuilder);
 
         // modelBuilder.Entity<Log>().Property(p => p.Id).ValueGeneratedNever(); // for example only
+        // modelBuilder.Ignore<Address>(); // example on how to prevent EF from mapping a class, and thus not saving in Database
     }
 
     // DbSet's to allow for querying on the tables

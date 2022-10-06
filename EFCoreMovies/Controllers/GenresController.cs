@@ -25,7 +25,7 @@ public class GenresController : ControllerBase
     [HttpGet] 
     public async Task<IEnumerable<Genre>> Get()
     {
-        _context.Logs.Add(new Log { Id = Guid.NewGuid(), Message = "Executing Get from GenresController " });
+        _context.Logs.Add(new Log { Message = "Executing Get from GenresController " });
         await _context.SaveChangesAsync();
         
         return await _context.Genres.AsNoTracking()            
