@@ -1,4 +1,5 @@
 ﻿using EFCoreMovies.Entities;
+using EFCoreMovies.Entities.Keyless;
 using EFCoreMovies.Entities.Seeding;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -28,6 +29,9 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // applies all config files in Configuration folder at once
         Seeding.Seed(modelBuilder);
 
+        // passing arbitrary query to Sql - no database is created for this cinema with a location entity
+        modelBuilder.Entity<CinemaWithoutLocation>().ToSqlQuery("Select Id, Name FROM Cinemas").ToView(null); 
+
         // modelBuilder.Entity<Log>().Property(p => p.Id).ValueGeneratedNever(); // for example only
         // modelBuilder.Ignore<Address>(); // example on how to prevent EF from mapping a class, and thus not saving in Database
     }
@@ -40,6 +44,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<CinemaOffer> CinemaOffers { get; set; }    
     public DbSet<CinemaHall> CinemaHalls { get; set; }    
     public DbSet<MovieActor> MoviesActors { get; set; }
-
     public DbSet<Log> Logs { get; set; }
+    public DbSet<CinemaWithoutLocation> CinemaWithoutLocations { get; set; }
 }

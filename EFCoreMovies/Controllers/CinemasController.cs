@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using EFCoreMovies.DTOs;
 using EFCoreMovies.Entities;
+using EFCoreMovies.Entities.Keyless;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,12 @@ public class CinemasController : ControllerBase
             .ToListAsync();
     }
 
+    [HttpGet("withoutlocation")]
+    public async Task<IEnumerable<CinemaWithoutLocation>> GetCinemaWithoutLocation()
+    {
+        /*return await _context.Set<CinemaWithoutLocation>().ToListAsync(); // note: Set creates a dbset on the fly*/
+        return await _context.CinemaWithoutLocations.ToListAsync(); // note: Set creates a dbset on the fly
+    }
 
     // Accepts input of latitude and longitude of personal current location
     // Compares distance of each cinema to personal location
