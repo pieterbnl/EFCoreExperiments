@@ -80,11 +80,13 @@ public class CinemasController : ControllerBase
                 new CinemaHall()
                 {
                     Cost = 200,
+                    Currency = Currency.Peso,
                     CinemaHallType = CinemaHallType.TwoDimensions
                 },
                 new CinemaHall()
                 {
                     Cost = 250,
+                    Currency = Currency.USDollar,
                     CinemaHallType = CinemaHallType.ThreeDimensions
                 },
             }

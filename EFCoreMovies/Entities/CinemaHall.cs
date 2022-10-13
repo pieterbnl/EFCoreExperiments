@@ -5,6 +5,7 @@ public class CinemaHall
     public int Id { get; set; }
     public CinemaHallType CinemaHallType { get; set; }
     public decimal Cost { get; set; }
+    public Currency Currency { get; set; }
     public int CinemaId { get; set; } // FK 
 
     // Navigation properties
