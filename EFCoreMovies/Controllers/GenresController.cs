@@ -54,8 +54,9 @@ public class GenresController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post(GenreCreationDTO genreCreationDTO)
     {
+        // var genreExists = await _context.Genres.IgnoreQueryFilters().AnyAsync(p => p.Name == genreCreationDTO.Name);
         var genreExists = await _context.Genres.AnyAsync(p => p.Name == genreCreationDTO.Name);
-
+        
         if (genreExists)
         {
             return BadRequest($"Genre with name {genreCreationDTO.Name} already exists");
