@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using EFCoreMovies.DTOs;
 using EFCoreMovies.Entities;
+using EFCoreMovies.Entities.Keyless;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,12 @@ public class MoviesController : ControllerBase
 
         return movieDTO;
     }*/
+
+    [HttpGet("withCounts")]
+    public async Task<ActionResult<IEnumerable<MoviesWithCounts>>> GetMoviesWithCounts()
+    {
+        return await _context.Set<MoviesWithCounts>().ToListAsync();
+    }
 
     [HttpGet("getmovie/{id:int}")]
     public async Task<ActionResult<Movie>> Get(int id)

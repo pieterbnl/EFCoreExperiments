@@ -30,7 +30,9 @@ public class ApplicationDbContext : DbContext
         Seeding.Seed(modelBuilder);
 
         // passing arbitrary query to Sql - no database is created for this cinema with a location entity
-        modelBuilder.Entity<CinemaWithoutLocation>().ToSqlQuery("Select Id, Name FROM Cinemas").ToView(null); 
+        modelBuilder.Entity<CinemaWithoutLocation>().ToSqlQuery("Select Id, Name FROM Cinemas").ToView(null);
+
+        modelBuilder.Entity<MoviesWithCounts>().ToView("MoviesWithCounts");
 
         // modelBuilder.Entity<Log>().Property(p => p.Id).ValueGeneratedNever(); // for example only
         // modelBuilder.Ignore<Address>(); // example on how to prevent EF from mapping a class, and thus not saving in Database
