@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreMovies.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IServiceProvider))]
     [Migration("20220922200301_Cinema")]
     partial class Cinema
     {

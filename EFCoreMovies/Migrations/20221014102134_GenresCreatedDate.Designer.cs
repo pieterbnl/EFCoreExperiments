@@ -12,7 +12,7 @@ using NetTopologySuite.Geometries;
 
 namespace EFCoreMovies.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IServiceProvider))]
     [Migration("20221014102134_GenresCreatedDate")]
     partial class GenresCreatedDate
     {

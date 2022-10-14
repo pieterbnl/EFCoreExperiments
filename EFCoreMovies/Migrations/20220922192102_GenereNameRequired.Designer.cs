@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreMovies.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IServiceProvider))]
     [Migration("20220922192102_GenereNameRequired")]
     partial class GenereNameRequired
     {

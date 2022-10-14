@@ -12,10 +12,10 @@ namespace EFCoreMovies.Controllers;
 
 public class GenresController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _context;
     private readonly IMapper _mapper;
 
-    public GenresController(ApplicationDbContext context, IMapper mapper)
+    public GenresController(IServiceProvider context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

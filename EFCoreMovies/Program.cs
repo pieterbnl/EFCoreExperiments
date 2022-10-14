@@ -1,4 +1,5 @@
 using EFCoreMovies;
+using EFCoreMovies.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -12,9 +13,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => {    
+builder.Services.AddDbContext<EFCoreMovies.IServiceProvider>(options => {    
     options.UseSqlServer("name=DefaultConnection", sqlServer => sqlServer.UseNetTopologySuite());
 });
+
+builder.Services.AddSingleton<Singleton>();
 
 var app = builder.Build();
 

@@ -11,7 +11,7 @@ using NetTopologySuite.Geometries;
 
 namespace EFCoreMovies.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IServiceProvider))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -94,11 +94,6 @@ namespace EFCoreMovies.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PictureURL")
-                        .HasMaxLength(150)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 

@@ -13,8 +13,8 @@ using NetTopologySuite.Geometries;
 namespace EFCoreMovies.Migrations
 {
     [DbContext(typeof(IServiceProvider))]
-    [Migration("20221013214302_ViewMovieCount")]
-    partial class ViewMovieCount
+    [Migration("20221014164132_CleanUpActorEntity")]
+    partial class CleanUpActorEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -355,6 +355,11 @@ namespace EFCoreMovies.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -419,6 +424,31 @@ namespace EFCoreMovies.Migrations
                     b.ToView(null);
 
                     b.ToSqlQuery("Select Id, Name FROM Cinemas");
+                });
+
+            modelBuilder.Entity("EFCoreMovies.Entities.Keyless.MoviesWithCounts", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AmountActors")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmountCinemas")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmountGenres")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.ToView("MoviesWithCounts");
                 });
 
             modelBuilder.Entity("EFCoreMovies.Entities.Log", b =>

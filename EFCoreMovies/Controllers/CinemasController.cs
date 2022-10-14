@@ -15,10 +15,10 @@ namespace EFCoreMovies.Controllers;
 [Route("api/cinemas")]
 public class CinemasController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _context;
     private readonly IMapper _mapper;
 
-    public CinemasController(ApplicationDbContext context, IMapper mapper)
+    public CinemasController(IServiceProvider context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

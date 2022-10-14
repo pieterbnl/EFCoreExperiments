@@ -12,10 +12,10 @@ namespace EFCoreMovies.Controllers;
 [Route("api/movies")]
 public class MoviesController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _context;
     private readonly IMapper _mapper;
 
-    public MoviesController(ApplicationDbContext context, IMapper mapper)
+    public MoviesController(IServiceProvider context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
