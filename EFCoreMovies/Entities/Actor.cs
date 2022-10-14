@@ -45,6 +45,8 @@ public class Actor
         }
     }
 
+    public string PictureURL { get; set; }
+
     // Navigation properties
     public HashSet<MovieActor> MovieActors { get; set; }
     public Address Addresses { get; set; }

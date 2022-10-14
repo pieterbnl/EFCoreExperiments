@@ -22,6 +22,7 @@ public class ApplicationDbContext : DbContext
         configurationBuilder.Properties<string>().HaveMaxLength(150);
     }
 
+    // OnModelCreating is used to configure the properties of the entities and relationships between them, using the FluentApi
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -36,6 +37,22 @@ public class ApplicationDbContext : DbContext
 
         // modelBuilder.Entity<Log>().Property(p => p.Id).ValueGeneratedNever(); // for example only
         // modelBuilder.Ignore<Address>(); // example on how to prevent EF from mapping a class, and thus not saving in Database
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes()) // provides access to each entity
+        {
+            // iterate their properties
+            foreach (var property in entityType.GetProperties())
+            {
+                // see what property of data type is, access the name and check if it contains 'url'
+                if (property.ClrType == typeof(string) 
+                    && property.Name.Contains("URL", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    property.SetIsUnicode(false); 
+                }
+                
+            }
+        }
+
     }
 
     // DbSet's to allow for querying on the tables
