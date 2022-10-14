@@ -28,9 +28,31 @@ public class GenresController : ControllerBase
         _context.Logs.Add(new Log { Message = "Executing Get from GenresController " });
         await _context.SaveChangesAsync();
         
-        return await _context.Genres.AsNoTracking()            
-            .OrderBy(g => g.Name)
+        return await _context.Genres.AsNoTracking()
+            /*.OrderBy(g => g.Name)*/
+            .OrderByDescending(g => EF.Property<DateTime>(g, "CreatedDate")) // EF object allows to execute special functionality, here used to access shadow property
             .ToListAsync();
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Genre>> Get(int id)
+    {
+        var genre = await _context.Genres.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (genre == null) return NotFound();
+
+        // Gain access to shadow property CreatedDate: .Entry allows accessing meta data
+        var createdDate = _context
+            .Entry(genre)
+            .Property<DateTime>("CreatedDate")
+            .CurrentValue;
+
+        return Ok(new
+        {
+            Id = genre.Id,
+            Name = genre.Name,
+            CreatedDate = createdDate
+        });
     }
 
     // simple but unrealistic example of modifying data using EF connected model
